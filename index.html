@@ -30,10 +30,10 @@
         /* Container for profile and about section */
         .profile-container {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 20px;
-            gap: 20px; /* Adds space between image and text */
+            gap: 40px; /* Adds space between image and text */
         }
 
         img {
@@ -44,7 +44,7 @@
 
         .about-me {
             max-width: 600px;
-            text-align: left;
+            text-align: justify; /* Makes text justified */
         }
 
         /* Background color for sections */
@@ -72,13 +72,16 @@
 <body>
     <header>
         <h1>Nico Rosamilia</h1>
-        <img src="ProfilePic.JPG" alt="Profile Picture" />
     </header>
 
-    <section>
-        <h2>About Me</h2>
-        <p>I am a Ph.D. candidate at Politecnico di Milano, School of Management. I have a strong aptitude for analysis, modeling, and critical thinking combined with investment and asset management passion. I efficiently communicate concepts orally and in writing, valuing collaboration with team members. In my research, I construct efficient portfolios and create a composite risk index also in a climate and sustainable finance angle.</p>
-    </section>
+    <!-- Profile and About Me Section -->
+    <div class="profile-container">
+        <img src="ProfilePic.JPG" alt="Profile Picture" />
+        <div class="about-me">
+            <h2>About Me</h2>
+            <p>I am a Ph.D. candidate at Politecnico di Milano, School of Management. I have a strong aptitude for analysis, modeling, and critical thinking combined with investment and asset management passion. I efficiently communicate concepts orally and in writing, valuing collaboration with team members. In my research, I construct efficient portfolios and create a composite risk index also in a climate and sustainable finance angle.</p>
+        </div>
+    </div>
 
     <section>
         <h2>Experience</h2>
@@ -108,6 +111,7 @@
     </footer>
 </body>
 </html>
+
 
 
 
