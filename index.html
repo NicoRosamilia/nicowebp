@@ -67,19 +67,25 @@
             width: 100%;
         }
 
-        /* Style for resume link */
+        /* Style for circular resume link */
         .resume-link {
             display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #3498db;
+            width: 50px; /* Width of the circle */
+            height: 50px; /* Height of the circle */
+            border-radius: 50%; /* Makes the link circular */
+            background-color: #3498db; /* Blue background */
             color: white;
+            text-align: center;
+            line-height: 50px; /* Vertically center the text */
             text-decoration: none;
-            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+            margin-top: 20px; /* Space above the link */
         }
 
         .resume-link:hover {
-            background-color: #2980b9;
+            background-color: #2980b9; /* Darker blue on hover */
         }
 
     </style>
@@ -93,11 +99,11 @@
     <div class="profile-container">
         <img src="ProfilePic.JPG" alt="Profile Picture" />
         <div class="about-me">
-            <h2>About Me</h2>
+            <h2> </h2>
             <p>Ph.D. from Politecnico di Milano, School of Management. I have a strong aptitude for analysis, modeling, and critical thinking combined with a passion for investment and asset management. I efficiently communicate concepts orally and in writing, valuing collaboration with team members. My research focuses on portfolio construction, price forecasting, and the secondary market for private equity and venture capital.</p>
 
-            <!-- Link to Resume -->
-            <a href="Resume_Rosamilia.pdf" class="resume-link" target="_blank">View My Resume</a>
+            <!-- Circular Link to Resume -->
+            <a href="Resume_Rosamilia.pdf" class="resume-link" target="_blank">CV</a>
         </div>
     </div>
 
@@ -129,6 +135,7 @@
     </footer>
 </body>
 </html>
+
 
 
 
