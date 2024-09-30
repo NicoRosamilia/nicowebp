@@ -36,19 +36,26 @@ h2 {
 /* Container for profile and about section */
 .profile-container {
     display: flex;
-    flex-direction: row; /* Keep items in a row for larger screens */
     align-items: flex-start; /* Align items at the top */
     justify-content: center; /* Center items horizontally */
     padding: 20px;
-    gap: 40px; /* Adds space between image and text */
+    margin: 0 auto; /* Center the container */
+    max-width: 1200px; /* Set a max width for the profile container */
+    gap: 20px; /* Adds space between image and text */
 }
 
 /* Default styles for the image */
 img {
-    max-width: 300px; /* Set a max width for larger screens */
+    max-width: 250px; /* Set a max width for larger screens */
     width: auto; /* Allow it to maintain its natural size */
     height: auto; /* Maintain aspect ratio */
     border-radius: 0; /* Keep the image square */
+}
+
+/* About Me Section */
+.about-me {
+    max-width: 600px; /* Allow more width for the text */
+    text-align: left; /* Align text to the left */
 }
 
 /* Responsive adjustments */
@@ -56,7 +63,7 @@ img {
     .profile-container {
         flex-direction: column; /* Stack items vertically on small screens */
         align-items: center; /* Center items */
-        text-align: center; /* Center text within the container */
+        gap: 20px; /* Space between image and text on small screens */
     }
 
     img {
@@ -67,7 +74,7 @@ img {
 
     .about-me {
         max-width: 90%; /* Allow more width for the text on mobile */
-        text-align: center; /* Center the text for better readability */
+        text-align: center; /* Center text for better readability */
     }
 }
 
