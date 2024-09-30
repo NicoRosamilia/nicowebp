@@ -4,93 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nico Rosamilia</title>
-    <link rel="stylesheet" href="styles.css"> <!-- If you have a CSS file -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the stylesheet -->
     <style>
-        /* General page styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f5; /* Light grey background */
-            color: #333;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
 
         header {
-            text-align: center;
-            background-color: #2c3e50;
-            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
             padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-
-        /* Container for profile and about section */
-        .profile-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            gap: 20px; /* Adds space between image and text */
+            font-size: 2rem;
+            color: #333;
         }
 
         img {
-            max-width: 200px;
+            width: 150px;
             height: auto;
-            border-radius: 50%; /* Makes image circular */
+            border-radius: 50%;
+            margin-left: 20px;
         }
 
-        .about-me {
-            max-width: 600px;
-            text-align: justify;
-        }
-
-        /* Background color for sections */
         section {
-            background-color: #ecf0f1;
+            width: 90%;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
+            background-color: #fff;
             border-radius: 8px;
-            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Styling for footer */
+        h2 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
         footer {
             text-align: center;
-            padding: 10px;
-            background-color: #2c3e50;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Nico Rosamilia</h1>
+        <img src="ProfilePic.JPG" alt="Profile Picture" />
     </header>
 
-    <div class="profile-container">
-        <img src="ProfilePic.JPG" alt="Profile Picture" />
-        <div class="about-me">
-            <h2>About Me</h2>
-            <p>Ph.D. from Politecnico di Milano, School of Management. I have a strong aptitude for analysis, modeling, and critical thinking combined with investment and asset management passion. I efficiently communicate concepts orally and in writing, valuing collaboration with team members. My research focuses on portfolio construction, price forecasting, and the secondary market for private equity and venture capital</p>
-        </div>
-    </div>
+    <section>
+        <h2>About Me</h2>
+        <p>I am a Ph.D. candidate at Politecnico di Milano, School of Management. I have a strong aptitude for analysis, modeling, and critical thinking combined with investment and asset management passion. I efficiently communicate concepts orally and in writing, valuing collaboration with team members. In my research, I construct efficient portfolios and create a composite risk index also in a climate and sustainable finance angle.</p>
+    </section>
 
     <section>
         <h2>Experience</h2>
         <ul> 
-            <li><strong>Investment Analyst | GMA International Services, Inc. |  2023 - 2024</li>
-            <li><strong>AMBassadors for sustaInable transITION | AMBITION |  2023 - 2024</li>
-            <li><strong>ESG Advisor | intellico | 2021 - 2024</li>
-            <li><strong>Financial Quantitative Researcher | European Regional Development Fund | 2021 - 2024</li>
-            <li><strong>Management Consultant | SVS Marketing | 2017 - 2018</li>
-            <li><strong>Sales | David Youngson and Associates |2016 - 2017</li>
-            <li><strong>Forex Analyst | Banca IMI - Be Shaping the Future | 2015 - 2016</li>
+            <li><strong>Investment Analyst</strong> | GMA International Services, Inc. | 2023 - 2024</li>
+            <li><strong>AMBassadors for sustaInable transITION</strong> | AMBITION | 2023 - 2024</li>
+            <li><strong>ESG Advisor</strong> | intellico | 2021 - 2024</li>
+            <li><strong>Financial Quantitative Researcher</strong> | European Regional Development Fund | 2021 - 2024</li>
+            <li><strong>Management Consultant</strong> | SVS Marketing | 2017 - 2018</li>
+            <li><strong>Sales</strong> | David Youngson and Associates | 2016 - 2017</li>
+            <li><strong>Forex Analyst</strong> | Banca IMI - Be Shaping the Future | 2015 - 2016</li>
         </ul>
     </section>
 
@@ -99,8 +106,8 @@
         <ul>
             <li><strong>Ph.D. in Finance</strong> | Politecnico di Milano, School of Management | 2021 - 2024</li>
             <li><strong>M.A. Economics</strong> | CERGE-EI, Chartered by the New York State Board of Regents, The University of the State of New York | 2019 - 2021</li>
-            <li><strong>M.Sc. Management Engineering</strong>  | School of Management, Politecnico di Milano| 2013 - 2016</li>
-            <li><strong>B.Sc. Management Engineering</strong> | University of Naples Federico II |  2010 - 2013</li>
+            <li><strong>M.Sc. Management Engineering</strong> | School of Management, Politecnico di Milano | 2013 - 2016</li>
+            <li><strong>B.Sc. Management Engineering</strong> | University of Naples Federico II | 2010 - 2013</li>
         </ul>
     </section>
 
@@ -109,5 +116,6 @@
     </footer>
 </body>
 </html>
+
 
 
