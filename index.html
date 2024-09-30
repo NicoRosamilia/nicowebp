@@ -42,6 +42,14 @@ h2 {
             gap: 40px; /* Adds space between image and text */
         }
 
+/* Default styles for the image */
+img {
+    max-width: 150px; /* Set a max width for larger screens */
+    width: auto; /* Allow it to maintain its natural size */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 0; /* Keep the image square */
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .profile-container {
@@ -49,18 +57,18 @@ h2 {
         align-items: center; /* Center items */
     }
 
-img {
-    max-width: 100px; /* Set the maximum width for larger screens */
-    width: 100%; /* Allow it to scale down on smaller screens */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 0; /* Keep the image square */
-}
+    img {
+        max-width: 150px; /* Set the max width for smaller screens */
+        width: auto; /* Allow it to maintain its natural size */
+        height: auto; /* Maintain aspect ratio */
+    }
 
     .about-me {
         max-width: 90%; /* Allow more width for the text on mobile */
         text-align: center; /* Center the text for better readability */
     }
 }
+
 
         /* Background color for sections */
         section {
