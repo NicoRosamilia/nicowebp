@@ -42,16 +42,23 @@ h2 {
             gap: 40px; /* Adds space between image and text */
         }
 
-img {
-    max-width: 250px; /* Set the maximum width */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 0; /* Remove the rounding to make the image square */
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: center; /* Center items */
+    }
 
-        .about-me {
-            max-width: 600px;
-            text-align: justify; /* Makes text justified */
-        }
+    img {
+        max-width: 100%; /* Ensure image does not exceed container width */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .about-me {
+        max-width: 90%; /* Allow more width for the text on mobile */
+        text-align: center; /* Center the text for better readability */
+    }
+}
 
         /* Background color for sections */
         section {
