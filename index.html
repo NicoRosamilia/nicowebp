@@ -49,10 +49,12 @@ h2 {
         align-items: center; /* Center items */
     }
 
-    img {
-        max-width: 100%; /* Ensure image does not exceed container width */
-        height: auto; /* Maintain aspect ratio */
-    }
+img {
+    max-width: 150px; /* Set the maximum width for larger screens */
+    width: 100%; /* Allow it to scale down on smaller screens */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 0; /* Keep the image square */
+}
 
     .about-me {
         max-width: 90%; /* Allow more width for the text on mobile */
