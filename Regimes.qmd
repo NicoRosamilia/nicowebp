@@ -1,0 +1,609 @@
+---
+title: "Asset Allocation Within Economic Regimes"
+author: "Nico Rosamilia"
+date: today
+format:
+  html:
+    css: styles.css
+    fig-cap-location: top
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    number-sections: true
+    page-layout: full
+    self-contained: true
+    include-in-header: _includes/mathjax-header.html
+bibliography: references.bib
+csl: apa.csl
+editor: visual
+jupyter: quarto-py
+---
+
+## **Constructing macroeconomics indicators**
+
+To support economic regime classification, we constructed four macro-theme indexes: **Growth, Inflation, Sentiment, Liquidity/Credit, and Labor**, each designed to track the evolving state of key macroeconomic dimensions. The methodology is consistent with the approach used in @kim2023dynamic. To summarize the macro variables for each theme into a single measure, we apply Principal Component Analysis and extract principal components, which serve as the indicator. For each theme, we begin index construction using the first available variable and progressively include additional variables as they start reporting. This ensures the index spans the maximum time window possible, improving historical coverage.
+
+The \$l_1\$ trend filter is a non-parametric technique used to estimate the underlying trend of a noisy time series, developed by @kim2009ell_1 (see Appendix A for a detailed explanation). Unlike traditional smoothing methods, such as moving averages or the Hodrick-Prescott filter, the \$l_1\$ trend filter applies a penalty on the second differences of the estimated trend, encouraging piecewise linearity while allowing for sharp changes or "kinks" at turning points. This method is particularly effective for detecting shifts in economic momentum.
+
+Formally, given a time series $y_t$, the \$l_1\$ trend filter estimates the trend $x_t$ by solving the following convex optimization problem:
+
+$$ \min_{x_t} \left( \frac{1}{2} \sum_{t=1}^n (y_t - x_t)^2 + \lambda \sum_{t=2}^{n-1} |x_{t-1} - 2x_t + x_{t+1}| \right) $$
+
+Here, $\lambda$ is a regularization parameter that controls the trade-off between the size of the residual $(y_t-x_t)$ and the smoothness of the estimated trend. Higher values of $\lambda$ produce smoother trends. The second term penalizes deviations from linearity and allows the method to identify trend inflection points.
+
+### Growth indicator
+
+Our monthly growth indicator uses the five leading macro-financial variables used by @kim2023dynamic: the **yield spread** (10-year Treasury minus federal funds rate), **credit spread** ([Moody’s Baa Corporate Bond yield](https://fred.stlouisfed.org/series/BAA) minus 10-year Treasury), **initial jobless claims** (4-week average), **building permits** [(BP)](https://fred.stlouisfed.org/series/PERMIT) and the **CBOE Volatility Index** (VIX). We add **manufacturing and services PMI** report on business. because we test that the addition of the latter variables improves the variance explained by the PC1 and, with the addition of PC2 from 1998 (starting date of NMI reporting), help us identify a more robust growth indicator in terms of explanatory power. To ensure consistency and comparability, each of the seven variables is normalized to have a zero mean and unit variance. Furthermore, because certain variables (yield spread, initial jobless claims, credit spread, and VIX) exhibit countercyclical properties, these are inverted by applying a negative sign prior to normalization. Due to data availability lags, one-month lags are applied to jobless claims and building permits when constructing the monthly growth indicator.
+
+### Inflation indicator
+
+Traditionally, inflation has been a key driver of asset returns, as extensively documented in the literature (e.g., @fama1977asset; @marshall1992inflation). While our analysis previously relied on the New York Fed’s Underlying Inflation Gauge (UIG) to track monthly inflation trends, the UIG has since been discontinued. In its place, we now utilize the **New York Fed’s Multivariate Core Trend Inflation** ([MCT](https://www.newyorkfed.org/research/policy/mct#--:overview)) measure, which serves a similar purpose. This index estimates the persistent component of inflation by filtering out transitory noise from a wide range of macroeconomic and price series. Much like the UIG, the multivariate trend measure is designed to capture the underlying inflation dynamics, offering more stable and forward-looking insights than traditional headline or core CPI figures. It has demonstrated superior performance in terms of forecast accuracy and timely identification of turning points, making it a robust indicator for evaluating inflation risks within a macro-financial framework. Additionally, in order to have more explanatory power in our inflation indicator, we use the **Producer Price Index** (PPI), the **University Of Michigan expected change in price** during next year, and the **Small Business Inflation** (NFIB). The inflation index is then smoothed using the same \$l_1\$ trend filtering algorithm to extract the underlying inflation trend.
+
+@fig-ginb plots the Growth and Infaltion indicator over time along with its \$l_1\$ trend estimate. This forward-looking index effectively captures business cycle dynamics and anticipates NBER recession periods, overlaid in blue for reference.
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| include: false   # hide any output from this warm-up
+
+import plotly.io as pio
+import plotly.graph_objects as go
+
+# Pick the first available renderer from a sensible list
+for candidate in ("notebook_connected", "jupyterlab", "vscode", "colab", "plotly_mimetype", "browser"):
+    if candidate in pio.renderers:
+        pio.renderers.default = candidate
+        break
+
+# Produce one hidden display to load plotly.js
+go.Figure().show()
+```
+
+```{python}
+#| label: fig-ginb
+#| fig-cap: ""
+#| fig-cap-location: top
+#| fig-number: true
+#| fig-width: 12
+#| fig-height: 7
+#| fig-align: center
+#| echo: false
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+
+# Load combined dataset
+file_path = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\MacroFundamentals\Data\Quarto\Dataset\Macro\1.3.AllMacroIndexes8-7-25.xlsx"
+df = pd.read_excel(file_path)
+
+# Ensure Date column is datetime
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Filter out rows with missing GrowthIndex or GrowthIndex_Trend_xt
+df = df.dropna(subset=['GrowthIndex', 'GrowthIndex_Trend_xt'])
+
+# Calculate slope and determine regime
+df['slope'] = df['GrowthIndex_Trend_xt'].diff()
+df['Regime'] = np.where(df['slope'] > 0, 'accelerating', 'decelerating')
+
+# Identify recession periods
+recession_periods = []
+in_recession = False
+start_date = None
+
+for i, val in enumerate(df['NBER_Recession'].fillna(0)):
+    if val == 1 and not in_recession:
+        in_recession = True
+        start_date = df['Date'].iloc[i]
+    elif val == 0 and in_recession:
+        in_recession = False
+        end_date = df['Date'].iloc[i]
+        recession_periods.append((start_date, end_date))
+
+if in_recession:
+    recession_periods.append((start_date, df['Date'].iloc[-1]))
+
+# --- First Figure (No gray areas for regimes) ---
+fig1 = go.Figure()
+
+fig1.add_trace(go.Scatter(
+    x=df['Date'], y=df['GrowthIndex'], mode='lines',
+    name='Growth Indicator', line=dict(color='black'),
+    hovertemplate='Date: %{x}<br>Growth: %{y:.2f}<extra></extra>'))
+
+fig1.add_trace(go.Scatter(
+    x=df['Date'], y=df['GrowthIndex_Trend_xt'], mode='lines',
+    name='L1 Trend Filter', line=dict(color='red'),
+    hovertemplate='Date: %{x}<br>Trend: %{y:.2f}<extra></extra>'))
+
+# Recession shading
+for start, end in recession_periods:
+    fig1.add_vrect(x0=start, x1=end, fillcolor='blue', opacity=0.3, line_width=0)
+
+# Recession label markers
+recession_points = df[df['NBER_Recession'] == 1].dropna(subset=['Recession_Label'])
+fig1.add_trace(go.Scatter(
+    x=recession_points['Date'], y=recession_points['GrowthIndex'], mode='markers',
+    marker=dict(color='blue', size=5), showlegend=False,
+    text=recession_points['Recession_Label'],
+    hovertemplate='Date: %{x}<br>Recession: %{text}<extra></extra>'))
+
+fig1.update_layout(
+    title='Growth Indicator with L1 Trend Filter and NBER Recessions',
+    xaxis_title='Date', yaxis_title='Growth Indicator',
+    plot_bgcolor='white', paper_bgcolor='white',
+    xaxis=dict(showgrid=False), yaxis=dict(showgrid=False)
+)
+
+fig1.show()
+
+# --- Second Figure (Inflation Index) ---
+fig2 = go.Figure()
+
+fig2.add_trace(go.Scatter(
+    x=df['Date'], y=df['InflationIndex'], mode='lines',
+    name='Inflation Indicator', line=dict(color='black'),
+    hovertemplate='Date: %{x}<br>Inflation: %{y:.2f}<extra></extra>'))
+
+fig2.add_trace(go.Scatter(
+    x=df['Date'], y=df['InflationIndex_Trend_xt'], mode='lines',
+    name='L1 Trend Filter', line=dict(color='red'),
+    hovertemplate='Date: %{x}<br>Trend: %{y:.2f}<extra></extra>'))
+
+# Recession shading
+for start, end in recession_periods:
+    fig2.add_vrect(x0=start, x1=end, fillcolor='blue', opacity=0.3, line_width=0)
+
+# Recession label markers
+recession_points = df[df['NBER_Recession'] == 1].dropna(subset=['Recession_Label'])
+fig2.add_trace(go.Scatter(
+    x=recession_points['Date'], y=recession_points['InflationIndex'], mode='markers',
+    marker=dict(color='blue', size=5), showlegend=False,
+    text=recession_points['Recession_Label'],
+    hovertemplate='Date: %{x}<br>Recession: %{text}<extra></extra>'))
+
+fig2.update_layout(
+    title='Inflation Indicator with L1 Trend Filter and NBER Recessions',
+    xaxis_title='Date', yaxis_title='Inflation Indicator',
+    plot_bgcolor='white', paper_bgcolor='white',
+    xaxis=dict(showgrid=False), yaxis=dict(showgrid=False)
+)
+
+fig2.show()
+
+```
+
+@fig-infcomp compares the inflation trend with the most widely cited inflation measures: the Consumer Price Index (CPI), the Personal Consumption Expenditures (PCE) index, and the Producer Price Index (PPI).
+
+```{python}
+#| label: fig-infcomp
+#| fig-cap: "Inflation Trend vs CPI/PCE/PPI and the 2025 Zoom-In (panel b)"
+#| fig-cap-location: top
+#| fig-number: true
+#| fig-width: 12
+#| fig-height: 7
+#| fig-align: center
+#| echo: false
+
+# pip install plotly pandas openpyxl
+import pandas as pd
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+# ============================
+# 1) YOUR MANUAL RANGES (FULL HISTORY / TOP SUBPLOT)
+#    - You set LEFT_MIN & LEFT_MAX.
+#    - For the RIGHT axis: set EITHER RIGHT_MIN or RIGHT_MAX (leave the other as None).
+#    - The code computes the missing bound so that the zero lines align.
+# ============================
+LEFT_MIN  = -2.0   # <-- EDIT
+LEFT_MAX  =  6.0   # <-- EDIT
+
+RIGHT_MIN = None   # <-- EDIT: set a value like -2.0 and keep RIGHT_MAX=None, OR...
+RIGHT_MAX = 20.0   # <-- EDIT: set a value like 8.0 and keep RIGHT_MIN=None
+
+# ============================
+# 2) FILES & COLUMNS
+# ============================
+file_trend = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\MacroFundamentals\Data\Quarto\Dataset\Macro\1.3.AllMacroIndexes8-7-25.xlsx"
+file_inflation = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\MacroFundamentals\Data\Quarto\Dataset\Macro\AncillaryExcel\InflationData-8-25-25.xlsx"
+
+TREND_COL = "InflationIndex_Trend_xt"
+CPI_COL   = "CPI YOY Index  (R1)"
+PCE_COL   = "PCE CYOY Index  (R1)"
+PPI_COL   = "PPI YOY Index  (L1)"
+
+POSSIBLE_DATE_NAMES = ["Date","date","DATE","Period","period","Time","time","Month","month"]
+
+def detect_date_column(df):
+    for c in POSSIBLE_DATE_NAMES:
+        if c in df.columns:
+            return c
+    for c in df.columns:
+        coerced = pd.to_datetime(df[c], errors="coerce", infer_datetime_format=True)
+        if coerced.notna().sum() >= max(3, int(0.5 * len(df))):
+            df[c] = coerced
+            return c
+    raise ValueError("Couldn't detect a date column. Please set it explicitly.")
+
+def solve_right_bound_for_zero_alignment(left_min, left_max, right_min=None, right_max=None):
+    """
+    Zero alignment condition:
+      p_left  = -left_min / (left_max - left_min)
+      p_right = -right_min / (right_max - right_min)  (must equal p_left)
+
+    Solve for the missing right bound.
+    If right_min is provided (and right_max is None): compute right_max.
+      right_max = right_min * (1 - 1/p)
+    If right_max is provided (and right_min is None): compute right_min.
+      right_min = p * right_max / (p - 1)
+    """
+    if left_max <= left_min:
+        raise ValueError("LEFT_MAX must be > LEFT_MIN.")
+    if left_min >= 0 or left_max <= 0:
+        raise ValueError("Left axis range must straddle zero (LEFT_MIN < 0 < LEFT_MAX).")
+
+    p = -left_min / (left_max - left_min)  # relative position of zero on left axis
+
+    if (right_min is None) == (right_max is None):
+        raise ValueError("Provide exactly one of RIGHT_MIN or RIGHT_MAX (not both / not neither).")
+
+    if right_min is not None:
+        # Compute right_max so zero aligns
+        if right_min >= 0:
+            raise ValueError("RIGHT_MIN must be < 0 to straddle zero.")
+        right_max_calc = right_min * (1 - 1.0/p)
+        if right_max_calc <= 0:
+            raise ValueError("Computed RIGHT_MAX does not straddle zero; adjust RIGHT_MIN or LEFT range.")
+        return right_min, float(right_max_calc)
+
+    # right_max is not None
+    if right_max <= 0:
+        raise ValueError("RIGHT_MAX must be > 0 to straddle zero.")
+    right_min_calc = (p * right_max) / (p - 1.0)
+    if right_min_calc >= 0:
+        raise ValueError("Computed RIGHT_MIN does not straddle zero; adjust RIGHT_MAX or LEFT range.")
+    return float(right_min_calc), right_max
+
+# ============================
+# 3) LOAD & PREP
+# ============================
+df_trend = pd.read_excel(file_trend)
+df_infl  = pd.read_excel(file_inflation)
+
+date_trend_col = detect_date_column(df_trend)
+date_infl_col  = detect_date_column(df_infl)
+
+df_trend[date_trend_col] = pd.to_datetime(df_trend[date_trend_col])
+df_infl[date_infl_col]   = pd.to_datetime(df_infl[date_infl_col])
+
+df_trend = df_trend.set_index(date_trend_col).sort_index()
+df_infl  = df_infl.set_index(date_infl_col).sort_index()
+
+cols_needed = [TREND_COL, CPI_COL, PCE_COL, PPI_COL]
+df = pd.concat([df_trend[[TREND_COL]], df_infl[[CPI_COL, PCE_COL, PPI_COL]]], axis=1)
+df = df.dropna(how="all", subset=cols_needed)
+
+df_2025 = df[df.index.year == 2025]  # zoom panel uses auto ranges (unchanged)
+
+# ============================
+# 4) COMPUTE RIGHT RANGE TO ALIGN ZERO
+# ============================
+RIGHT_MIN_SOLVED, RIGHT_MAX_SOLVED = solve_right_bound_for_zero_alignment(
+    left_min=LEFT_MIN, left_max=LEFT_MAX, right_min=RIGHT_MIN, right_max=RIGHT_MAX
+)
+
+
+# ============================
+# 5) PLOT
+# ============================
+# Nice display names
+rename_map = {
+    "InflationIndex_Trend_xt": "Inflation Trend",
+    "CPI YOY Index  (R1)": "CPI",
+    "PCE CYOY Index  (R1)": "PCE",
+    "PPI YOY Index  (L1)": "PPI",
+}
+
+# After you merge your dataframes (df), just rename:
+df = df.rename(columns=rename_map)
+df_2025 = df[df.index.year == 2025]  # 2025 zoom stays consistent
+
+# Now update variable names accordingly
+TREND_COL = "Inflation Trend"
+CPI_COL   = "CPI"
+PCE_COL   = "PCE"
+PPI_COL   = "PPI"
+
+# Colors mapped to new names
+colors = {
+    "Inflation Trend": "black",
+    "CPI": "royalblue",
+    "PCE": "darkorange",
+    "PPI": "green",
+}
+
+
+fig = make_subplots(
+    rows=2, cols=1, shared_xaxes=False,
+    subplot_titles=("", "2025 Zoom-In"),
+    specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
+    vertical_spacing=0.08
+)
+
+def add_traces(sub_df, row, showlegend):
+    fig.add_trace(
+        go.Scatter(x=sub_df.index, y=sub_df[TREND_COL],
+                   name=TREND_COL, mode="lines",
+                   line=dict(width=2, color=colors[TREND_COL]),
+                   showlegend=showlegend),
+        row=row, col=1, secondary_y=False
+    )
+    for col in [CPI_COL, PCE_COL, PPI_COL]:
+        fig.add_trace(
+            go.Scatter(x=sub_df.index, y=sub_df[col],
+                       name=col, mode="lines",
+                       line=dict(color=colors[col]),
+                       showlegend=showlegend),
+            row=row, col=1, secondary_y=True
+        )
+
+# Full history (legend shown)
+add_traces(df, row=1, showlegend=True)
+# 2025 zoom (legend hidden, auto ranges)
+if not df_2025.empty:
+    add_traces(df_2025, row=2, showlegend=False)
+
+fig.update_layout(
+    title="",
+    hovermode="x unified",
+    height=800,
+    legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="center", x=0.5),
+    margin=dict(l=50, r=50, t=70, b=50),
+)
+
+# Remove grids; apply manual ranges on TOP ONLY
+fig.update_yaxes(title_text="Inflation Trend (left)",  secondary_y=False, row=1, col=1,
+                 showgrid=False, zeroline=True, range=[LEFT_MIN, LEFT_MAX])
+fig.update_yaxes(title_text="Indicators (%) (right)", secondary_y=True,  row=1, col=1,
+                 showgrid=False, zeroline=True, range=[RIGHT_MIN_SOLVED, RIGHT_MAX_SOLVED])
+fig.update_xaxes(showgrid=False, row=1, col=1)
+
+# Bottom subplot: unchanged (auto)
+fig.update_yaxes(title_text="Inflation Trend",  secondary_y=False, row=2, col=1,
+                 showgrid=False, zeroline=True)
+fig.update_yaxes(title_text="Indicators (%)", secondary_y=True,  row=2, col=1,
+                 showgrid=False, zeroline=True)
+fig.update_xaxes(showgrid=False, row=2, col=1)
+
+fig.show()
+
+
+```
+
+### Sentiment, liquidity/credit, and labor indicators
+
+For Sentiment, Liquidity/Credit, and Labor themes, each index is constructed from multiple macro-financial variables. We evaluate different variables among the ones considered as leading in the literature for each theme. From the correlation analysis and the contribution to the PCA first component, we drop variables that are less significant and do not contribute to the PC1. Therefore, the choice of variables in each theme reflects the best balance for explanatory and anticipating power.
+
+#### Sentiment indicator
+
+The sentiment index integrates both survey-based and market-driven indicators that reflect consumer confidence and investor risk appetite. The **University of Michigan Consumer Sentiment Index** (UMCSI) and the **Conference Board Consumer Confidence Index** ([CBCC](https://www.conference-board.org/topics/consumer-confidence/)) measure how consumers perceive the economy, with higher values indicating optimism and a favorable outlook. These are interpreted as looser sentiment conditions when they rise. On the market side, the **Bloomberg Initial Public Offering Index** (BIPO) and the **S&P US IPO and Spin-off Index** (SUSIPOSO) gauge investor enthusiasm toward newly public companies. Strong performance in these indexes is associated with heightened speculative interest and greater willingness to take on risk. Although BIPO has been discontinued, it historically served as a useful proxy for IPO-related sentiment. Rising values across these indicators uniformly signal increased optimism, confidence, and accommodative sentiment, while declines reflect caution, reduced risk-taking, and tightening psychological conditions in financial markets. Collectively, these variables add a behavioral and forward-looking layer to the sentiment index framework.
+
+#### **Liquidity/Credit** indicator
+
+The sentiment index captures the psychological stance of financial markets, focusing on perceived stress, risk appetite, and credit availability. It is built using three key variables: the **Conference Board Leading Credit Index** ([LCI](https://www.conference-board.org/topics/us-leading-indicators/)), the **St. Louis Fed Financial Stress Index** ([FSI](https://fred.stlouisfed.org/series/STLFSI4)), and the **Chicago Fed National Financial Conditions Index** ([FCI](https://www.chicagofed.org/research/data/nfci/current-data)). Each of these indicators rises when financial conditions become tighter and sentiment deteriorates. The LCI reflects anticipated credit stress, the FSI quantifies real-time market stress from spreads and volatility, and the FCI provides a broad measure of systemic financial tightness across over 100 variables. We check for correlation and explained variance in the PCA analysis to confirm directional consistency and significance in the creation of the single indicator. The index consolidates diverse measures into a single time series where downward movement signals growing optimism, looser credit, and enhanced risk tolerance.
+
+#### Labor indicator
+
+The labor component of the macro regime framework leverages two composite indicators, the **Kansas City Fed’s Momentum Indicator for Labor Market Conditions** ([MCLA](https://fred.stlouisfed.org/series/FRBKCLMCIM)) and the **Conference Board Employment Trends Index** ([ETI](https://www.conference-board.org/topics/employment-trends-index/)), to capture both the level and direction of U.S. employment activity. The MCLA summarizes 24 labor metrics such as payrolls and unemployment into a single monthly index reflecting the overall strength of labor market conditions, with higher values indicating a tighter and more robust job environment. The Conference Board’s ETI aggregates eight forward-looking employment indicators to signal future hiring trends and labor demand. In both cases, upward movement in these indices signals stronger labor markets. Since they already reflect labor strength in their raw form, both are used without inversion in the framework, providing a clear, forward-looking view of labor market momentum essential for identifying economic regime shifts.
+
+@fig-indexplo displays the indicators and their trend with NBER recessions.
+
+```{python}
+#| label: fig-indexplo
+#| fig-cap: "Macro Indicators with L1 Trend Filter and NBER Recessions (blue shaded areas)"
+#| fig-cap-location: top
+#| fig-number: true
+#| fig-width: 12
+#| fig-height: 7
+#| fig-align: center
+#| echo: false
+
+# Load combined dataset
+file_path = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\MacroFundamentals\Data\Quarto\Dataset\Macro\1.3.AllMacroIndexes8-7-25.xlsx"
+df = pd.read_excel(file_path)
+
+# Indicators (no trend)
+indicators = ['SentimentIndex', 'LiquidityCreditIndex', 'LaborIndex']
+colors = ['black', 'red', 'green']
+
+# Recession periods
+recession_periods = []
+in_recession = False
+start_date = None
+
+for i, val in enumerate(df['NBER_Recession'].fillna(0)):
+    if val == 1 and not in_recession:
+        in_recession = True
+        start_date = df['Date'].iloc[i]
+    elif val == 0 and in_recession:
+        in_recession = False
+        end_date = df['Date'].iloc[i]
+        recession_periods.append((start_date, end_date))
+
+if in_recession:
+    recession_periods.append((start_date, df['Date'].iloc[-1]))
+
+# Plot
+fig = go.Figure()
+
+for i, ind in enumerate(indicators):
+    df_sub = df.dropna(subset=[ind])
+    fig.add_trace(go.Scatter(
+        x=df_sub['Date'], y=df_sub[ind], mode='lines',
+        name=ind.replace('Index', '').replace('_', ' ').strip(),
+        line=dict(color=colors[i % len(colors)]),
+        hovertemplate=f'Date: %{{x}}<br>{ind}: %{{y:.2f}}<extra></extra>'
+    ))
+
+# Recession shading
+for start, end in recession_periods:
+    fig.add_vrect(x0=start, x1=end, fillcolor='blue', opacity=0.3, line_width=0)
+
+# Recession label markers
+recession_points = df[df['NBER_Recession'] == 1].dropna(subset=['Recession_Label'])
+fig.add_trace(go.Scatter(
+    x=recession_points['Date'],
+    y=[df[indicators[0]].min()] * len(recession_points),  # anchor at bottom
+    mode='markers',
+    marker=dict(color='blue', size=1), showlegend=False,
+    text=recession_points['Recession_Label'],
+    hovertemplate='Date: %{x}<br>Recession: %{text}<extra></extra>'
+))
+
+fig.update_layout(
+    title='',
+    xaxis_title='Date', yaxis_title='Index Level',
+    plot_bgcolor='white', paper_bgcolor='white',
+    xaxis=dict(showgrid=False), yaxis=dict(showgrid=False)
+)
+
+fig.show()
+```
+
+## The market and the economic regimes
+
+We first consider the growth indicator to gauge a first relation between market and the pure growth trends. Secondly, we detail the economic regimes and analyze specific economic conditions.
+
+### The market and the growth index kinks
+
+As in @fig-cluster-density-skew, returns differ by growth regime. The 12-month conditional skewness in a SHAP-style dynamic plots show that also in accelerating environment the probability of negative recalling the old traders say regarding exchange rates that it seem we can translate to indexes "*equity returns go up by the stairs and down by the elevator*".
+
+```{python}
+#| label: fig-cluster-density-skew
+#| fig-cap: "Conditional Density and Skewness of Returns by Growth Index Kinks"
+#| echo: false
+
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+from scipy.stats import skew, gaussian_kde
+
+# Load market data
+market_path = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\\MacroFundamentals\\Data\\1.Original\\2.MarketData\\7-28.MonthlyMarketIndexes.xlsx"
+df_market = pd.read_excel(market_path)
+df_market['Date'] = pd.to_datetime(df_market['Date'])
+
+# Load growth data
+growth_path = r"C:\Users\Nico\Desktop\Lavoro\3.Reserach\\MacroFundamentals\\Data\\Quarto\\Dataset\\Macro\\1.2.OriginalMacroVariablesWithGrowthIndex8-7-2025.xlsx"
+df_growth = pd.read_excel(growth_path)
+df_growth['Date'] = pd.to_datetime(df_growth['Date'])
+
+# Compute slope and regime
+df_growth['slope'] = df_growth['GrowthIndex_Trend_xt'].diff()
+df_growth['Regime'] = np.where(df_growth['slope'] > 0, 'accelerating', 'decelerating')
+
+# Merge on Date
+df = pd.merge(df_market, df_growth[['Date', 'Regime']], on='Date', how='inner')
+
+# Define ticker mappings to real names
+ticker_name_map = {
+    'S5ENRS_P': 'Energy', 'S5RLST_P': 'RealEstate', 'S5INFT_P': 'Tech',
+    'S5TELS_P': 'CommServices', 'S5FINL_P': 'Financials', 'S5COND_P': 'ConsDiscret', 'S5INDU_P': 'Industrials',
+    'S5HLTH_P': 'HealthCare', 'S5UTIL_P': 'Utilities', 'S5CONS_P': 'ConsStaples',
+    'SPX_P': 'S&P 500', 'SPW_P': 'EW S&P 500', 'RLV_P': 'Russell1000',
+    'CO1': 'Brent Crude Oil', 'HG1': 'Copper', 'XAUUSD': 'Gold (USD)'
+}
+
+# Define clusters
+cyclical = ['S5ENRS_P', 'S5RLST_P', 'S5INFT_P', 'S5TELS_P', 'S5FINL_P', 'S5COND_P', 'S5INDU_P']
+defensive = ['S5HLTH_P', 'S5UTIL_P', 'S5CONS_P', 'SPX_P', 'SPW_P', 'RLV_P']
+commodities = ['CO1', 'HG1', 'XAUUSD']
+clusters = {'Cyclical': cyclical, 'Defensive': defensive, 'Commodities': commodities}
+
+# Compute log returns
+for col in cyclical + defensive + commodities:
+    df[f'{col}_ret'] = np.log(df[col] / df[col].shift(1))
+
+# Interactive KDE density and SHAP-style skewness side by side
+window_size = 12  # rolling window in months
+
+for cluster_name, tickers in clusters.items():
+    for regime in ['accelerating', 'decelerating']:
+        fig = make_subplots(rows=1, cols=2, subplot_titles=(f"{cluster_name} Returns Density ({regime.capitalize()} Growth)",
+                                                           f"Dynamic Conditional Skewness (Window={window_size}m)"),
+                            column_widths=[0.5, 0.5])
+
+        # Left: KDE Density Plots
+        for ticker in tickers:
+            label = ticker_name_map[ticker]
+            returns = df[df['Regime'] == regime][f'{ticker}_ret'].dropna() * 100  # convert to %
+            if len(returns) > 1:
+                kde = gaussian_kde(returns)
+                x_vals = np.linspace(returns.min(), returns.max(), 500)
+                y_vals = kde(x_vals)
+                fig.add_trace(go.Scatter(
+                    x=x_vals, y=y_vals, mode='lines', name=label,
+                    legendgroup=label, showlegend=True,
+                    hovertemplate=f"Sector: {label}<br>Density: %{{y:.2f}}<br>Return: %{{x:.2f}}%<extra></extra>"
+                ), row=1, col=1)
+
+        fig.add_vline(x=0, line_dash="dash", line_color="black", row=1, col=1)
+
+        # Right: Skewness Plot
+        skew_data = []
+        for ticker in tickers:
+            label = ticker_name_map[ticker]
+            series = df[['Date', f'{ticker}_ret', 'Regime']].dropna()
+            series = series[series['Regime'] == regime].copy()
+            series.set_index('Date', inplace=True)
+            rolling_skew = series[f'{ticker}_ret'].rolling(window=window_size).apply(skew, raw=True).dropna()
+            values = rolling_skew.values
+
+            density, bins = np.histogram(values, bins=20, density=True)
+            bin_indices = np.digitize(values, bins=bins) - 1
+            point_sizes = 5 + 15 * density[np.clip(bin_indices, 0, len(density)-1)]
+            color_intensity = density[np.clip(bin_indices, 0, len(density)-1)]
+
+            for i, val in enumerate(values):
+                skew_data.append({
+                    'Skewness': val,
+                    'Ticker': label,
+                    'Size': point_sizes[i],
+                    'Color': color_intensity[i]
+                })
+
+        skew_df = pd.DataFrame(skew_data)
+
+        fig.add_trace(go.Scatter(
+            x=skew_df['Skewness'],
+            y=skew_df['Ticker'],
+            mode='markers',
+            marker=dict(
+                size=skew_df['Size'],
+                color=skew_df['Color'],
+                colorscale='icefire',
+                showscale=True,
+                opacity=0.8,
+                colorbar=dict(title='Skewness')
+            ),
+            hovertemplate='%{y}: %{x:.2f} skewness',
+            name='',
+            legendgroup='skew', showlegend=False
+        ), row=1, col=2)
+
+        fig.add_vline(x=0, line_dash="dash", line_color="black", row=1, col=2)
+
+        fig.update_layout(title_text='', height=500, width=1100,
+                          plot_bgcolor='white', paper_bgcolor='white',
+                          xaxis=dict(showgrid=False, title='Monthly Log Return (%)'),
+                          yaxis=dict(showgrid=False, title='Density'),
+                          xaxis2=dict(showgrid=False, title='Skewness'),
+                          yaxis2=dict(showgrid=False, title='Index'),
+                          legend=dict(x=0.01, y=0.99))
+
+        fig.show()
+
+```
