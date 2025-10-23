@@ -319,7 +319,6 @@ html {
     <h1 class="site-title">Nico Rosamilia</h1>
 
     <!-- Right: search -->
-    <!-- Right: search -->
 <div class="search-wrapper">
   <div class="search-icon" id="searchIcon">🔍</div>
   <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
@@ -394,7 +393,7 @@ html {
   </div>
 
   <section>
-  <p> With an academic background in Management Engineering (BSc and MSc), Economics (MA), and a Ph.D. in Finance, Nico specializes in asset pricing and macro-financial dynamics. He designs and manages multi-asset portfolios and develops quantitative models using fundamental, price, technical, and volatility data to analyze and invest across various assets. His approach integrates valuation techniques commonly applied in investment banking and private equity—such as DCF, comparable company, and precedent transaction analyses—to assess relative value and capital structure efficiency. His tactical overlay leverages cross-asset trade idea generation, directional options strategies, and volatility positioning, supported by deep knowledge of options pricing, delta hedging, and market microstructure. With experience in macro market regimes and statistical return modeling, Nico integrates macroeconomic correlations and risk analytics to seek alpha and hedge against downside risk. </p>
+  <p> With an academic background in Management Engineering (BSc and MSc), Economics (MA), and a Ph.D. in Finance, Nico specializes in asset pricing and macro-financial dynamics. He designs and manages multi-asset portfolios and develops quantitative models using fundamental, price, technical, and volatility data to analyze and invest across various assets. His approach integrates valuation techniques commonly applied in investment banking and private equity (DCF, comparable company, and precedent transaction analyses) to assess relative value and capital structure efficiency. His tactical overlay leverages cross-asset trade idea generation, directional options strategies, and volatility positioning, supported by deep knowledge of options pricing, delta hedging, and market microstructure. With experience in macro market regimes and statistical return modeling, Nico integrates macroeconomic correlations and risk analytics to seek alpha and hedge against downside risk. </p>
   </section>
 <!-- Table of Contents -->
 <nav class="toc">
@@ -409,9 +408,7 @@ html {
 <section aria-labelledby="research-work">
   <h2 id="research-work">Research & Portfolio Work</h2>
 
-<p>
-Market strategies and portfolio advisory
-    </p>
+<p><strong>Market strategies and portfolio advisory</strong></p>
   <ul>
     <li>
       Time-Varying Transition Probabilities (TVTP) Markov switching model for
@@ -434,18 +431,22 @@ Market strategies and portfolio advisory
       settings
     </li>
   </ul>
-<p>
-Recent applied research 
-    </p>
+
+  <p><strong>Recent applied research</strong></p>
 <p>
     <a href="view-pdfMLBA.html" target="_blank" rel="noopener noreferrer">Forecasting Stock Returns with Bayesian Econometrics and Machine Learning</a>
 </p>
-        <p>This project builds a Bayesian framework for forecasting stock returns using time-varying parameters, stochastic volatility, and selective shrinkage priors. It adapts to unstable predictive relations and integrates light machine-learning layers for residual nonlinearities. The model delivers robust, uncertainty-aware forecasts and improved portfolio decisions under changing market conditions.</p>
+        <p>This project builds a Bayesian framework for forecasting stock returns using time-varying parameters, stochastic volatility, and selective shrinkage priors. It adapts to unstable predictive relations and integrates light machine-learning layers for residual nonlinearities.</p>
     <p> 
 <p>
     <a href="view-pdfTVTP.html" target="_blank" rel="noopener noreferrer">Dynamic Regime Transition Probabilities and Macro-Calibrated Portfolio Allocation</a>
 </p>
-        <p>This study introduces a probabilistic framework for forecasting monthly macro regimes and building adaptive portfolios. A time-varying transition model, calibrated with macro and sentiment factors, generates regime probabilities that guide allocation. Using ridge-VAR forecasts and monotone probability calibration, the approach achieves reliable predictions and robust cross-asset performance, linking regime analysis to practical portfolio design.</p>
+        <p>This study forecasts monthly macro regimes and builds adaptive portfolios with a time-varying transition model, calibrated with macro factors. Using ridge-VAR forecasts and monotone probability calibration, the approach achieves reliable predictions and robust cross-asset performance.</p>
+    <p> 
+  <p>
+    <a href="view-pdfVAL.html" target="_blank" rel="noopener noreferrer">Valuation Practice and Theory: Traditional Models and a Jump-Diffusion Framework</a>
+</p>
+        <p>This research evaluates traditional valuation models (DCF, Asset-Based, and Comparable Multiples) and develops a jump-diffusion real-options framework for illiquid venture assets. It benchmarks each method on M&A, IPO, and VC datasets, revealing where classical tools fail and how discontinuities and flexibility can be modeled more accurately.</p>
     <p> 
 </section>
    
@@ -521,27 +522,47 @@ Recent applied research
   });
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const searchIcon = document.getElementById('searchIcon');
-    const searchInput = document.getElementById('searchInput');
-    
-    searchIcon.addEventListener('click', function() {
-      if (searchInput.style.display === 'block') {
-        searchInput.style.display = 'none';
-      } else {
-        searchInput.style.display = 'block';
-        searchInput.focus();
-      }
-    });
-    
-    // Optional: hide search if you click elsewhere
-    document.addEventListener('click', function(e) {
-      if (!searchIcon.contains(e.target) && !searchInput.contains(e.target)) {
-        searchInput.style.display = 'none';
-      }
-    });
+document.addEventListener('DOMContentLoaded', function () {
+  const searchIcon = document.getElementById('searchIcon');
+  const searchInput = document.getElementById('searchInput');
+
+  // Toggle search box
+  searchIcon.addEventListener('click', () => {
+    searchInput.style.display =
+      searchInput.style.display === 'block' ? 'none' : 'block';
+    if (searchInput.style.display === 'block') searchInput.focus();
   });
+
+  // Hide if clicking elsewhere
+  document.addEventListener('click', e => {
+    if (!searchIcon.contains(e.target) && !searchInput.contains(e.target)) {
+      searchInput.style.display = 'none';
+    }
+  });
+
+  // Handle the actual search
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const term = searchInput.value.toLowerCase();
+      const sections = document.querySelectorAll('h1, h2, p, a');
+
+      let found = false;
+      sections.forEach(sec => {
+        if (!found && sec.textContent.toLowerCase().includes(term)) {
+          sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          sec.style.outline = '2px solid #ffcc00';
+          setTimeout(() => (sec.style.outline = 'none'), 2000);
+          found = true;
+        }
+      });
+
+      if (!found) alert('No matches found.');
+    }
+  });
+});
 </script>
+
 
 </body>
 </html>
