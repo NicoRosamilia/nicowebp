@@ -12,7 +12,7 @@
       margin: 0;
       padding: 0;
     }
-/* Header */
+/* Header container */
 header {
   background-color: #001f3f;
   padding: 15px 40px;
@@ -25,17 +25,17 @@ header {
   align-items: center;
 }
 
-/* Site title */
+/* Site title in the center */
 .site-title {
   margin: 0;
   font-size: 1.8rem;
   font-weight: normal;
   color: white;
   text-align: center;
-  flex: 1; /* keeps it centered */
+  flex: 1;
 }
 
-/* Nav menu */
+/* Navigation menu (Home) */
 .nav-links {
   list-style: none;
   margin: 0;
@@ -51,32 +51,40 @@ header {
   text-decoration: none;
   color: white;
   font-weight: bold;
+  cursor: pointer;
 }
 
-/* Dropdown */
+/* Dropdown menu */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 30px;
   left: 0;
   background-color: #002952;
-  border-radius: 4px;
-  min-width: 180px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  min-width: 220px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  z-index: 10;
 }
 
+/* Each dropdown link */
 .dropdown-menu li {
   display: block;
+  margin: 0;
 }
 
 .dropdown-menu a {
   display: block;
-  padding: 10px 16px;
+  padding: 8px 16px;
   color: white;
+  font-weight: normal;       /* not bold */
+  text-align: left;          /* left-aligned */
+  text-decoration: none;
 }
 
 .dropdown-menu a:hover {
-  background-color: #003366;
+  background-color: #003f73;
 }
 
 /* Show dropdown on hover */
@@ -93,6 +101,11 @@ header {
 
 .search-icon:hover {
   color: #ffcc00;
+}
+
+/* Smooth scroll for section links */
+html {
+  scroll-behavior: smooth;
 }
 
     .toc {
@@ -253,7 +266,7 @@ html {
 <body>
 <header>
   <div class="navbar">
-    <!-- Left: dropdown -->
+    <!-- Left: Dropdown menu -->
     <nav>
       <ul class="nav-links">
         <li class="dropdown">
@@ -267,13 +280,14 @@ html {
       </ul>
     </nav>
 
-    <!-- Center: name -->
+    <!-- Center: site title -->
     <h1 class="site-title">Nico Rosamilia</h1>
 
-    <!-- Right: search -->
+    <!-- Right: search icon -->
     <div class="search-icon">🔍</div>
   </div>
 </header>
+
 
 
 
