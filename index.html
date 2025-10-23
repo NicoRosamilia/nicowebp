@@ -265,6 +265,35 @@ html {
       width: 100%;
       box-sizing: border-box;
     }
+    .search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+  color: #ffcc00;
+}
+
+.search-input {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  width: 180px;
+  color: #333;
+}
+
   </style>
 </head>
 <body>
@@ -290,7 +319,12 @@ html {
     <h1 class="site-title">Nico Rosamilia</h1>
 
     <!-- Right: search -->
-    <div class="search-icon">🔍</div>
+    <!-- Right: search -->
+<div class="search-wrapper">
+  <div class="search-icon" id="searchIcon">🔍</div>
+  <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
+</div>
+
   </div>
 </header>
 
@@ -419,7 +453,6 @@ Recent applied research
 
 <section>
 <h2 id="papers">Papers</h2> 
-<p> Research focus on portfolio optimization, price forecasting, risk management, and private equity and venture capital.</p>
 <p>
      <a href="https://www.sciencedirect.com/science/article/pii/S3050700625000131" target="_blank" rel="noopener noreferrer"> 
             <strong>What’s News with You: Price Forecasting and Sentiment Scores</strong> <em>(joint work with Leone, F., Marazzina, D.)</em>
@@ -483,6 +516,28 @@ Recent applied research
     document.addEventListener('click', function(event) {
       if (!dropdown.contains(event.target)) {
         dropdown.classList.remove('active');
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchIcon = document.getElementById('searchIcon');
+    const searchInput = document.getElementById('searchInput');
+    
+    searchIcon.addEventListener('click', function() {
+      if (searchInput.style.display === 'block') {
+        searchInput.style.display = 'none';
+      } else {
+        searchInput.style.display = 'block';
+        searchInput.focus();
+      }
+    });
+    
+    // Optional: hide search if you click elsewhere
+    document.addEventListener('click', function(e) {
+      if (!searchIcon.contains(e.target) && !searchInput.contains(e.target)) {
+        searchInput.style.display = 'none';
       }
     });
   });
