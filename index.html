@@ -30,14 +30,14 @@
 
     /* === Three-column layout for top section === */
     .top-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-      gap: 40px;
-    }
+  display: flex;
+  justify-content: space-evenly; /* Tighter spacing */
+  align-items: center;
+  max-width: 1000px; /* narrower container to bring columns closer */
+  margin: 40px auto;
+  padding: 0 10px; /* reduce side padding */
+  gap: 20px; /* reduce the gap between columns (was 40px) */
+}
 
     /* Left column (picture) */
     .profile-pic {
@@ -46,11 +46,11 @@
     }
 
     .profile-pic img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%; /* Rounded picture */
-      object-fit: cover;
-    }
+  width: 220px;  /* smaller */
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
     /* Center column (intro and links) */
     .intro {
