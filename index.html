@@ -1,125 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nico Rosamilia</title>
-    <link rel="stylesheet" href="styles.css"> <!-- If you have a CSS file -->
-    <style>
-        /* General page styling */
-        body {
-            font-family: 'Georgia', serif;
-            background-color: #ffffff; /* #f0f0f5 is the light grey background */
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-header {
-    text-align: center;
-    background-color: #001f3f;
-    color: white;
-    padding: 20px; /* Make sure padding is the same for header and footer */
-    width: 100%; /* Ensure full width */
-    box-sizing: border-box; /* Include padding in the total width */
-}
-
-h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: normal; /* This removes the bold effect */
-}
-h2 {
-    font-weight: normal; /* Removes the bold effect */
-}
-
-/* Container for profile and about section */
-.profile-container {
-    display: flex;
-    align-items: flex-start; /* Align items at the top */
-    justify-content: center; /* Center items horizontally */
-    padding: 20px;
-    margin: 0 auto; /* Center the container */
-    max-width: 1200px; /* Set a max width for the profile container */
-    gap: 20px; /* Adds space between image and text */
-}
-
-/* Default styles for the image */
-img {
-    max-width: 300px; /* Set a max width for larger screens */
-    width: auto; /* Allow it to maintain its natural size */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 0; /* Keep the image square */
-    margin-top: 20px; /* Move the image down */
-}
-
-/* About Me Section */
-.about-me {
-    max-width: 600px; /* Allow more width for the text */
-    text-align: left; /* Align text to the left */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .profile-container {
-        flex-direction: column; /* Stack items vertically on small screens */
-        align-items: center; /* Center items */
-        gap: 20px; /* Space between image and text on small screens */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nico Rosamilia</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #ffffff;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
 
-    img {
-        max-width: 150px; /* Set the max width for smaller screens */
-        width: auto; /* Allow it to maintain its natural size */
-        height: auto; /* Maintain aspect ratio */
+    header {
+      text-align: center;
+      background-color: #001f3f;
+      color: white;
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    .about-me {
-        max-width: 90%; /* Allow more width for the text on mobile */
-        text-align: center; /* Center text for better readability */
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: normal;
     }
-}
 
+    /* === Three-column layout for top section === */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      gap: 40px;
+    }
 
-        /* Background color for sections */
-        section {
-            background-color: #ffffff;
-            margin: 5px auto;
-            text-align: justify;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 1100px;
-        }
+    /* Left column (picture) */
+    .profile-pic {
+      flex: 1;
+      text-align: center;
+    }
 
-        /* Styling for footer */
-footer {
-    text-align: center;
-    padding: 20px; /* Same padding as the header */
-    background-color: #001f3f;
-    color: white;
-    width: 100%; /* Ensure full width */
-    box-sizing: border-box; /* Include padding in the total width */
-    position: relative; /* Keep footer relative unless you want it to be fixed at the bottom */
-}
-        
-    </style>
+    .profile-pic img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%; /* Rounded picture */
+      object-fit: cover;
+    }
+
+    /* Center column (intro and links) */
+    .intro {
+      flex: 2;
+      text-align: center;
+    }
+
+    .intro h2 {
+      font-weight: normal;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .intro ul {
+      list-style-type: disc;
+      padding: 0;
+      margin: 0 auto;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .intro li {
+      margin: 5px 0;
+    }
+
+    .intro a {
+      color: #001f3f;
+      text-decoration: none;
+    }
+
+    .intro a:hover {
+      text-decoration: underline;
+    }
+
+    /* Right column (academia) */
+    .academia {
+      flex: 1;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .academia a {
+      color: #001f3f;
+      text-decoration: none;
+    }
+
+    .academia a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .top-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+      }
+    }
+
+    /* Section style (below intro) */
+    section {
+      background-color: #ffffff;
+      margin: 5px auto;
+      text-align: justify;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 1100px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #001f3f;
+      color: white;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Nico Rosamilia</h1>
-    </header>
+  <header>
+    <h1>Nico Rosamilia</h1>
+  </header>
 
-<!-- Profile and About Me Section -->
-<div class="profile-container">
-    <img src="NewPic2.jpg" alt="Profile Picture" />
-    <div class="about-me">
-        <p>Hi, I’m a Portfolio Manager and Investment Strategist at with a Ph.D. in Finance from <a href="https://www.som.polimi.it/en/" target="_blank">Politecnico di Milano School of Management</a>.</p> 
-
-            <p><a href="Resume_Rosamilia.pdf" class="circular-link" target="_blank">Resume</a> and <a href="CV_Rosamilia.pdf" class="circular-link" target="_blank">CV</a></p>
-            <p>Email: <a href="mailto:nico.rosamilia@polimi.it">nico.rosamilia@polimi.it</a></p>
-            <p><a href="https://www.efi.polimi.it/" target="_blank">EFI Research Group</a></p>
-            <p><a href="https://www.linkedin.com/in/nico-rosamilia-9a73bb97" target="_blank">LinkedIn</a></p>
+  <!-- Three-column intro -->
+  <div class="top-section">
+    <!-- Left: Picture -->
+    <div class="profile-pic">
+      <img src="NewPic2.jpg" alt="Profile Picture">
     </div>
-</div>
+
+    <!-- Center: Intro -->
+    <div class="intro">
+      <h2>Hi, I am Nico, the guy on the left</h2>
+      <ul>
+        <li><a href="Resume_Rosamilia.pdf" target="_blank">Resume</a></li>
+        <li><a href="mailto:nico.rosamilia@polimi.it">nico.rosamilia@polimi.it</a></li>
+        <li><a href="https://www.linkedin.com/in/nico-rosamilia-9a73bb97" target="_blank">LinkedIn</a></li>
+      </ul>
+    </div>
+
+    <!-- Right: Academia -->
+    <div class="academia">
+      <p><strong>Ph.D. Politecnico di Milano</strong></p>
+      <p><a href="https://www.efi.polimi.it/" target="_blank">EFRi Research Group</a></p>
+    </div>
+  </div>
+
 <section aria-labelledby="research-work">
   <h2 id="research-work">Research & Portfolio Work</h2>
 
