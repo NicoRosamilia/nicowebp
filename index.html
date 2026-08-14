@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nico Rosamilia</title>
+
   <style>
+
     body {
       font-family: 'Georgia', serif;
       background-color: #ffffff;
@@ -12,204 +14,210 @@
       margin: 0;
       padding: 0;
     }
-/* Header base */
-header {
-  background-color: #001f3f;
-  padding: 15px 40px;
-  color: white;
-}
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-/* Title in the center */
-.site-title {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: normal;
-  color: white;
-  text-align: center;
-  flex: 1;
-}
-
-/* Navigation links */
-.nav-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li {
-  position: relative;
-  display: inline-block;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Dropdown */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%; /* appears right under Home */
-  left: 0;
-  background-color: #002952;
-  border-radius: 6px;
-  min-width: 220px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  padding: 10px 0;
-  z-index: 100;
-}
-
-.dropdown-menu li {
-  display: block;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 8px 16px;
-  color: white;
-  font-weight: normal;   /* not bold */
-  text-align: left;
-}
-
-.dropdown-menu a:hover {
-  background-color: #003f73;
-}
-
-/* Search icon */
-.search-icon {
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: white;
-}
-
-.search-icon:hover {
-  color: #ffcc00;
-}
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Dropdown open state */
-.dropdown.active .dropdown-menu {
-  display: block;
-}
-
-/* Keep hover area alive for better UX */
-.dropdown:hover > .dropbtn {
-  background-color: #00204d;
-}
-
-
-    .toc {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #f7f9fb;
-  border-left: 4px solid #001f3f;
-  border-radius: 8px;
-}
-
-.toc h3 {
-  margin-top: 0;
-  font-weight: normal;
-  color: #001f3f;
-}
-
-.toc ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.toc li {
-  margin: 8px 0;
-}
-
-.toc a {
-  color: #001f3f;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.toc a:hover {
-  text-decoration: underline;
-}
-html {
-  scroll-behavior: smooth;
-}
+    /* =========================
+       HEADER
+       ========================= */
 
     header {
-      text-align: center;
       background-color: #001f3f;
+      padding: 20px 40px;
       color: white;
-      padding: 20px;
       width: 100%;
       box-sizing: border-box;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-      font-weight: normal;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
     }
 
-    /* === Three-column layout for top section === */
-    .top-section {
-  display: flex;
-  justify-content: space-evenly; /* Tighter spacing */
-  align-items: center;
-  max-width: 1000px; /* narrower container to bring columns closer */
-  margin: 40px auto;
-  padding: 0 10px; /* reduce side padding */
-  gap: 20px; /* reduce the gap between columns (was 40px) */
-}
+    /* Title in the center */
+    .site-title {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: normal;
+      color: white;
+      text-align: center;
+      flex: 1;
+    }
 
-    /* Left column (picture) */
+    /* Navigation links */
+    .nav-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Dropdown */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #002952;
+      border-radius: 6px;
+      min-width: 220px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .dropdown-menu li {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      color: white;
+      font-weight: normal;
+      text-align: left;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #003f73;
+    }
+
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown:hover > .dropbtn {
+      background-color: #00204d;
+    }
+
+    /* =========================
+       SEARCH
+       ========================= */
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-icon {
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: white;
+      transition: color 0.3s ease;
+    }
+
+    .search-icon:hover {
+      color: #ffcc00;
+    }
+
+    .search-input {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 30px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      width: 180px;
+      color: #333;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* =========================
+       TABLE OF CONTENTS
+       ========================= */
+
+    .toc {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f7f9fb;
+      border-left: 4px solid #001f3f;
+      border-radius: 8px;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      font-weight: normal;
+      color: #001f3f;
+    }
+
+    .toc ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .toc li {
+      margin: 8px 0;
+    }
+
+    .toc a {
+      color: #001f3f;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================
+       TWO-COLUMN INTRO
+       ========================= */
+
+    .top-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      max-width: 850px;
+
+      margin: 40px auto;
+      padding: 0 20px;
+
+      gap: 60px;
+    }
+
+    /* LEFT COLUMN: PROFILE PICTURE */
     .profile-pic {
       flex: 1;
       text-align: center;
     }
 
     .profile-pic img {
-  width: 220px;  /* smaller */
-  height: 220px;
-  border-radius: 50%;
-  object-fit: cover;
-}
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
-    /* Center column (intro and links) */
+    /* RIGHT COLUMN: INTRO */
     .intro {
-      flex: 2;
+      flex: 1;
       text-align: center;
     }
 
-    .intro h2 {
-      font-weight: normal;
-      font-size: 1.5rem;
-      margin-bottom: 15px;
+    .intro strong {
+      font-size: 1.2rem;
     }
 
-    .intro ul {
-      list-style-type: disc;
-      padding: 0;
-      margin: 0 auto;
-      display: inline-block;
-      text-align: left;
-    }
-
-    .intro li {
-      margin: 5px 0;
+    .intro p {
+      margin: 14px 0;
     }
 
     .intro a {
@@ -221,33 +229,30 @@ html {
       text-decoration: underline;
     }
 
-    /* Right column (academia) */
-    .academia {
-      flex: 1;
-      text-align: center;
-      font-size: 1rem;
-    }
+    /* =========================
+       RESPONSIVE MOBILE DESIGN
+       ========================= */
 
-    .academia a {
-      color: #001f3f;
-      text-decoration: none;
-    }
-
-    .academia a:hover {
-      text-decoration: underline;
-    }
-
-    /* Responsive design */
     @media (max-width: 768px) {
+
       .top-section {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 20px;
+        gap: 25px;
       }
+
+      .profile-pic img {
+        width: 190px;
+        height: 190px;
+      }
+
     }
 
-    /* Section style (below intro) */
+    /* =========================
+       GENERAL SECTIONS
+       ========================= */
+
     section {
       background-color: #ffffff;
       margin: 5px auto;
@@ -265,152 +270,261 @@ html {
       width: 100%;
       box-sizing: border-box;
     }
-    .search-wrapper {
-  position: relative;
-}
-
-.search-icon {
-  font-size: 1.3rem;
-  cursor: pointer;
-  color: white;
-  transition: color 0.3s ease;
-}
-
-.search-icon:hover {
-  color: #ffcc00;
-}
-
-.search-input {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 30px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 6px 8px;
-  font-size: 0.9rem;
-  width: 180px;
-  color: #333;
-}
 
   </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L7BND542XK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-L7BND542XK');
-</script>
-  
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L7BND542XK"></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag(){
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-L7BND542XK');
+  </script>
+
 </head>
+
+
 <body>
+
+
+<!-- =========================
+     HEADER
+     ========================= -->
+
 <header>
+
   <div class="navbar">
-    <!-- Left: Dropdown menu -->
+
+    <!-- LEFT: Dropdown menu -->
     <nav>
+
       <ul class="nav-links">
+
         <li class="dropdown">
-          <a href="#" class="dropbtn">Home ▾</a>
+
+          <a href="#" class="dropbtn">
+            Home ▾
+          </a>
+
           <ul class="dropdown-menu">
-            <li><a href="Resume_Rosamilia.pdf" target="_blank">Resume</a></li>
-            <li><a href="mailto:nico.rosamilia@polimi.it">Contact</a></li>
-            <li><a href="#research-work">Research & Portfolio Work</a></li>
-            <li><a href="#papers">Papers</a></li>
-            <li><a href="#work-in-progress">Work in Progress</a></li>
+
+            <li>
+              <a href="Resume_Rosamilia.pdf" target="_blank">
+                Resume
+              </a>
+            </li>
+
+            <li>
+              <a href="mailto:nico.rosamilia@nyu.edu">
+                Contact
+              </a>
+            </li>
+
+            <li>
+              <a href="#research-work">
+                Research & Portfolio Work
+              </a>
+            </li>
+
+            <li>
+              <a href="#papers">
+                Papers
+              </a>
+            </li>
+
+            <li>
+              <a href="#work-in-progress">
+                Work in Progress
+              </a>
+            </li>
+
           </ul>
+
         </li>
+
       </ul>
+
     </nav>
 
-    <!-- Center: name -->
-    <h1 class="site-title">Nico Rosamilia</h1>
 
-    <!-- Right: search -->
-<div class="search-wrapper">
-  <div class="search-icon" id="searchIcon">
-  <svg xmlns="http://www.w3.org/2000/svg"
-       width="22" height="22" viewBox="0 0 24 24"
-       fill="none" stroke="white" stroke-width="2"
-       stroke-linecap="round" stroke-linejoin="round"
-       style="vertical-align: middle;">
-    <circle cx="11" cy="11" r="8" fill="transparent" stroke="white"></circle>
-    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="white"></line>
-  </svg>
-</div>
+    <!-- CENTER: Name -->
 
-  <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
-</div>
+    <h1 class="site-title">
+      Nico Rosamilia
+    </h1>
+
+
+    <!-- RIGHT: Search -->
+
+    <div class="search-wrapper">
+
+      <div class="search-icon" id="searchIcon">
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="22"
+             height="22"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="white"
+             stroke-width="2"
+             stroke-linecap="round"
+             stroke-linejoin="round"
+             style="vertical-align: middle;">
+
+          <circle
+            cx="11"
+            cy="11"
+            r="8"
+            fill="transparent"
+            stroke="white">
+          </circle>
+
+          <line
+            x1="21"
+            y1="21"
+            x2="16.65"
+            y2="16.65"
+            stroke="white">
+          </line>
+
+        </svg>
+
+      </div>
+
+      <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Search..."
+      >
+
+    </div>
 
   </div>
+
 </header>
 
 
 
+<!-- =========================
+     TWO-COLUMN INTRO
+     ========================= -->
+
+<div class="top-section">
 
 
-  <!-- Three-column intro -->
-  <div class="top-section">
-    <!-- Left: Picture -->
-    <div class="profile-pic">
-      <img src="BlueProfile.PNG" alt="Profile Picture">
-    </div>
+  <!-- LEFT COLUMN: PROFILE PICTURE -->
 
-    <!-- Center: Intro -->
-    <div class="intro">
-      <strong>Welcome! Let’s get acquainted...</strong>
-      <p><a href="Resume_Rosamilia.pdf" target="_blank">Resume</a></li></p>
-        <p>
-  <a href="mailto:nico.rosamilia@polimi.it" style="color:#0A66C2; text-decoration:none;">
-    <svg xmlns="http://www.w3.org/2000/svg" 
-         width="22" height="22" fill="#0A66C2" 
-         viewBox="0 0 16 16" 
-         style="vertical-align:middle; margin-right:6px;">
-      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 
-      2H2a2 2 0 0 1-2-2V4zm13.941-.857A1 1 0 0 0 
-      13 3H3a1 1 0 0 0-.94.643L8 8.414l5.941-5.271zM1.066 
-      5.233V12a1 1 0 0 0 1 1h12a1 1 0 0 0 
-      1-1V5.233l-5.5 4.875a1.5 1.5 0 0 1-2 
-      0L1.066 5.233z"/>
-    </svg>
-  </a>
-</p>
+  <div class="profile-pic">
 
-        <p>
-  <a href="https://www.linkedin.com/in/nico-rosamilia-9a73bb97" target="_blank" style="color:#0A66C2; text-decoration:none; font-weight:bold;">
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="22" height="22" fill="#0A66C2"
-         viewBox="0 0 16 16"
-         style="vertical-align:middle; margin-right:6px;">
-      <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 
-      16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 
-      1.146H1.175C.526 16 0 15.487 0 
-      14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 
-      0 1.358-.554 1.358-1.248-.015-.71-.52-1.248-1.342-1.248-.822 
-      0-1.358.538-1.358 1.248 0 .694.52 
-      1.248 1.327 1.248h.015zm4.908 
-      8.212h2.4v-4.042c0-.216.016-.432.08-.586.173-.431.568-.878 
-      1.232-.878.869 0 1.216.662 1.216 
-      1.634v3.872h2.4V9.91c0-2.22-1.184-3.252-2.763-3.252-1.28 
-      0-1.845.7-2.165 1.193h.016V6.169h-2.4c.03.662 
-      0 7.225 0 7.225z"/>
-    </svg>
-  </a>
-</p>
+    <img
+      src="BlueProfile.PNG"
+      alt="Nico Rosamilia"
+    >
 
-      </ul>
-    </div>
-
-    <!-- Right: Academia -->
-    <div class="academia">
-      <p><strong>Ph.D. in Management Engineering</strong></p>
-      <p><a href="https://www.som.polimi.it/en/" target="_blank">Politecnico di Milano School of Management</a></p>
-      <p><a href="https://www.efi.polimi.it/" target="_blank">EFRi Research Group</a></p>
-      <p></p><a href="Rosamilia_CV.pdf" class="circular-link" target="_blank">CV</a></p>
-    </div>
   </div>
+
+
+
+  <!-- RIGHT COLUMN: INTRO -->
+
+  <div class="intro">
+
+    <strong>
+      Welcome! Let’s get acquainted...
+    </strong>
+
+
+    <!-- Resume -->
+
+<p>
+  <a href="Resume_Rosamilia.pdf" target="_blank">
+    Resume
+  </a>
+  &nbsp; | &nbsp;
+  <a href="Rosamilia_CV.pdf" target="_blank">
+    CV
+  </a>
+</p>
+
+
+    <!-- Email -->
+
+    <p>
+
+      <a
+        href="mailto:nico.rosamilia@polimi.it"
+        style="color:#0A66C2; text-decoration:none;">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          fill="#0A66C2"
+          viewBox="0 0 16 16"
+          style="vertical-align:middle;">
+
+          <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2
+          2H2a2 2 0 0 1-2-2V4zm13.941-.857A1 1 0 0 0
+          13 3H3a1 1 0 0 0-.94.643L8 8.414l5.941-5.271zM1.066
+          5.233V12a1 1 0 0 0 1 1h12a1 1 0 0 0
+          1-1V5.233l-5.5 4.875a1.5 1.5 0 0 1-2
+          0L1.066 5.233z"/>
+
+        </svg>
+
+      </a>
+
+    </p>
+
+
+
+    <!-- LinkedIn -->
+
+    <p>
+
+      <a
+        href="https://www.linkedin.com/in/nico-rosamilia-9a73bb97"
+        target="_blank"
+        style="color:#0A66C2; text-decoration:none;">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          fill="#0A66C2"
+          viewBox="0 0 16 16"
+          style="vertical-align:middle;">
+
+          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0
+          16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175
+          1.146H1.175C.526 16 0 15.487 0
+          14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837
+          0 1.358-.554 1.358-1.248-.015-.71-.52-1.248-1.342-1.248-.822
+          0-1.358.538-1.358 1.248 0 .694.52
+          1.248 1.327 1.248h.015zm4.908
+          8.212h2.4v-4.042c0-.216.016-.432.08-.586.173-.431.568-.878
+          1.232-.878.869 0 1.216.662 1.216
+          1.634v3.872h2.4V9.91c0-2.22-1.184-3.252-2.763-3.252-1.28
+          0-1.845.7-2.165 1.193h.016V6.169h-2.4c.03.662
+          0 7.225 0 7.225z"/>
+
+        </svg>
+
+      </a>
+
+    </p>
+
+  </div>
+
+</div>
 
   <section>
   <p> With an academic background in Management Engineering (BSc and MSc), Economics (MA), and a Ph.D. in Finance, Nico specializes in <a href="https://nicorosamilia.github.io/nicowebp/Regimes.html" target="_blank" rel="noopener">macroeconomic</a> forecasting, multi-asset <a href="https://nicorosamilia.github.io/nicowebp/TVTPandMonthlyPortfolios.html" target="_blank" rel="noopener">dynamic portfolios</a> construction, and quantitative <a href="view-pdfVAL.html" target="_blank" rel="noopener noreferrer">valuation models</a> for both public and private markets. His tactical overlay leverages cross-asset investment idea generation, directional options strategies, and volatility positioning, supported by deep knowledge of options pricing, delta hedging, and market microstructure.</p>
