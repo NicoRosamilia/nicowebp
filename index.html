@@ -184,16 +184,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
       max-width: 850px;
-
       margin: 40px auto;
       padding: 0 20px;
-
       gap: 60px;
     }
 
     /* LEFT COLUMN: PROFILE PICTURE */
+
     .profile-pic {
       flex: 1;
       text-align: center;
@@ -207,6 +205,7 @@
     }
 
     /* RIGHT COLUMN: INTRO */
+
     .intro {
       flex: 1;
       text-align: center;
@@ -227,6 +226,63 @@
 
     .intro a:hover {
       text-decoration: underline;
+    }
+
+    /* =========================
+       RESUME / CV
+       ========================= */
+
+    .resume-links {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
+      margin: 14px 0 26px 0;
+    }
+
+    .resume-links a:first-child {
+      justify-self: end;
+      margin-right: 18px;
+    }
+
+    .resume-links .separator {
+      justify-self: center;
+      color: #333;
+    }
+
+    .resume-links a:last-child {
+      justify-self: start;
+      margin-left: 18px;
+    }
+
+    /* =========================
+       CONTACT ICONS
+       ========================= */
+
+    .contact-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+
+    .contact-row a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      color: #0A66C2;
+      text-decoration: none;
+    }
+
+    .contact-row a:hover {
+      text-decoration: none;
+    }
+
+    .contact-icon {
+      width: 34px;
+      height: 34px;
+      display: block;
     }
 
     /* =========================
@@ -303,6 +359,7 @@
   <div class="navbar">
 
     <!-- LEFT: Dropdown menu -->
+
     <nav>
 
       <ul class="nav-links">
@@ -442,34 +499,36 @@
     </strong>
 
 
-    <!-- Resume -->
+    <!-- Resume / CV -->
 
-<p>
-  <a href="ResumeRosamiliaN.pdf" target="_blank">
-    Resume
-  </a>
-  &nbsp; | &nbsp;
-  <a href="Rosamilia_CV.pdf" target="_blank">
-    CV
-  </a>
-</p>
+    <div class="resume-links">
+
+      <a href="ResumeRosamiliaN.pdf" target="_blank">
+        Resume
+      </a>
+
+      <span class="separator">|</span>
+
+      <a href="Rosamilia_CV.pdf" target="_blank">
+        CV
+      </a>
+
+    </div>
 
 
     <!-- Email -->
 
-    <p>
+    <div class="contact-row">
 
       <a
         href="mailto:nico.rosamilia@polimi.it"
-        style="color:#0A66C2; text-decoration:none;">
+        aria-label="Email">
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          fill="#0A66C2"
+          class="contact-icon"
           viewBox="0 0 16 16"
-          style="vertical-align:middle;">
+          fill="#0A66C2">
 
           <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2
           2H2a2 2 0 0 1-2-2V4zm13.941-.857A1 1 0 0 0
@@ -482,46 +541,65 @@
 
       </a>
 
-    </p>
-
+    </div>
 
 
     <!-- LinkedIn -->
 
-    <p>
+    <div class="contact-row">
 
       <a
         href="https://www.linkedin.com/in/nico-rosamilia-9a73bb97"
         target="_blank"
-        style="color:#0A66C2; text-decoration:none;">
+        rel="noopener noreferrer"
+        aria-label="LinkedIn">
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          fill="#0A66C2"
-          viewBox="0 0 16 16"
-          style="vertical-align:middle;">
+          class="contact-icon"
+          viewBox="0 0 24 24">
 
-          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0
-          16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175
-          1.146H1.175C.526 16 0 15.487 0
-          14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837
-          0 1.358-.554 1.358-1.248-.015-.71-.52-1.248-1.342-1.248-.822
-          0-1.358.538-1.358 1.248 0 .694.52
-          1.248 1.327 1.248h.015zm4.908
-          8.212h2.4v-4.042c0-.216.016-.432.08-.586.173-.431.568-.878
-          1.232-.878.869 0 1.216.662 1.216
-          1.634v3.872h2.4V9.91c0-2.22-1.184-3.252-2.763-3.252-1.28
-          0-1.845.7-2.165 1.193h.016V6.169h-2.4c.03.662
-          0 7.225 0 7.225z"/>
+          <!-- Blue LinkedIn square -->
+          <rect
+            x="0"
+            y="0"
+            width="24"
+            height="24"
+            rx="2"
+            fill="#0A66C2">
+          </rect>
+
+          <!-- i -->
+          <circle
+            cx="6.3"
+            cy="6.6"
+            r="1.7"
+            fill="white">
+          </circle>
+
+          <rect
+            x="4.8"
+            y="9"
+            width="3"
+            height="10"
+            fill="white">
+          </rect>
+
+          <!-- n -->
+          <path
+            d="M10.3 9h2.9v1.4h.04
+               c.4-.8 1.4-1.8 3.4-1.8
+               3.6 0 4.3 2.3 4.3 5.4V19h-3v-4.5
+               c0-1.1 0-2.5-1.55-2.5
+               -1.55 0-1.8 1.2-1.8 2.4V19h-3V9z"
+            fill="white">
+          </path>
 
         </svg>
 
       </a>
 
-    </p>
-
+    </div>
   </div>
 
 </div>
@@ -532,7 +610,7 @@
 </p>
 
 <p>
-  My research sits at the intersection of finance, macroeconomics, and quantitative investing, with a focus on forecasting, dynamic portfolio construction, and valuation across public and private markets. My academic work applies machine learning and asset-pricing methods to sustainable finance and portfolio optimization. I teach Sport Finance and Economics, Financial Management and Accounting, and Research Methods.
+  My research sits at the intersection of finance, macroeconomics, and quantitative investing, with a focus on dynamic portfolio construction and valuation across public and private markets. My academic work applies machine learning and asset-pricing methods to sustainable finance and portfolio optimization. I teach Sport Finance and Economics, Financial Management and Accounting, and Research Methods.
 </p>
   </section>
 <!-- Table of Contents -->
